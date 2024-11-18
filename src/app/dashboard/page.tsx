@@ -1,24 +1,25 @@
-// app/dashboard/page.tsx
+"use client";
 import supabase from "../utils/supabase/supabase";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-export default async function DashboardPage() {
-  const cookieStore = await cookies(); // Get cookies
-  const accessToken = cookieStore.get("sb-access-token")?.value;
+export default function DashboardPage() {
+  const router = useRouter();
 
-  if (!accessToken) {
-    redirect("/login"); // Redirect if no token is found
-  }
+  useEffect(() => {
+    const handleRedirect = async () => {
+    const { data, error } = await supabase.auth.getSession();
 
-  const {
-    data: { user },
-    error
-  } = await supabase.auth.getUser(accessToken);
+      if (error) {
+        console.error("Error retrieving session:", error.message);
+        router.replace("/"); // Redirect to home or login on failure
+      } else {
+        console.log("Session retrieved:", data.session);
+        router.replace("/dashboard"); // Redirect to the actual dashboard
+      }
+    };
 
-  if (error || !user) {
-    redirect("/login");
-  }
-
-  return <div>Welcome, {user.email}!</div>;
+    handleRedirect();
+  }, [router]);
+  return <div>Welcome!</div>;
 }

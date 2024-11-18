@@ -6,10 +6,7 @@ import { LogIn } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { BookText } from "lucide-react";
 
-export function Header({
-  className,
-  ...props
-}: ComponentProps<"header">) {
+export function Header({ className, ...props }: ComponentProps<"header">) {
   return (
     <header
       className={clsx(
@@ -24,10 +21,12 @@ export function Header({
         </Link>
 
         {/* Sign In Button */}
-        <Button>
-          <LogIn />
-          Sign in
-        </Button>
+        <Link href="/login">
+          <Button>
+            <LogIn />
+            Sign Up
+          </Button>
+        </Link>
       </div>
     </header>
   );

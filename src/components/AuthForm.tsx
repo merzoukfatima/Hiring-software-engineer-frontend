@@ -65,17 +65,20 @@ export default function AuthForm() {
   const signInWithGoogle = async () => {
     setLoading(true);
     setError("");
-
+    console.log("im here");
     try {
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: "google"
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${window.location.origin}/dashboard`,
+        },
       });
+      alert("Logged in successfully!");
       if (error) throw error;
     } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);
-      redirect("/dashboard");
     }
   };
 
@@ -143,7 +146,7 @@ export default function AuthForm() {
               className="w-full mt-2"
               onClick={(e) => {
                 e.preventDefault();
-                signInWithGoogle()
+                signInWithGoogle();
               }}
               disabled={loading}>
               Login with Google
