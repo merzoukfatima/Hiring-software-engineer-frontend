@@ -1,37 +1,27 @@
 import { useOthers, useSelf } from "@liveblocks/react/suspense";
 import styles from "./Avatars.module.css";
+import { USER_INFO } from "@/constants";
 
 export function Avatars() {
-  const users = useOthers();
-  const currentUser = useSelf();
-
+  const currentUser = USER_INFO[Math.floor(Math.random() * USER_INFO.length)];
   return (
     <div className={styles.avatars}>
-      {users.map(({ connectionId, info }) => {
-        return (
-          <Avatar key={connectionId} picture={info.picture} name={info.name} />
-        );
-      })}
-
       {currentUser && (
         <div className="relative ml-8 first:ml-0">
-          <Avatar
-            picture={currentUser.info.picture}
-            name={currentUser.info.name}
-          />
+          <Avatar picture={currentUser.picture} color={currentUser.color} />
         </div>
       )}
     </div>
   );
 }
 
-export function Avatar({ picture, name }: { picture: string; name: string }) {
+export function Avatar({ picture, color }: { picture: string; color: string }) {
   return (
-    <div className={styles.avatar} data-tooltip={name}>
+    <div className={styles.avatar} data-tooltip={color}>
       <img
         src={picture}
         className={styles.avatar_picture}
-        data-tooltip={name}
+        data-tooltip={color}
       />
     </div>
   );
