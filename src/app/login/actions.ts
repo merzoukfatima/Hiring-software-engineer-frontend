@@ -14,9 +14,16 @@ export async function login(formData: FormData) {
     email: formData.get("email") as string,
     password: formData.get("password") as string
   };
-
-  const { error } = await supabase.auth.signInWithPassword(data);
-
+  console.log("data", data);
+  const {
+    data: { user },
+    error
+  } = await supabase.auth.signInWithPassword(data);
+  if (error) {
+    console.error("Login failed:", error);
+  } else {
+    console.log("Logged in user:", user);
+  }
   if (error) {
     redirect("/error");
   }
@@ -30,19 +37,27 @@ export async function signup(formData: FormData) {
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
-  const data = {
+  const {
+    data: { user },
+    error
+  } = await supabase.auth.signUp({
     email: formData.get("email") as string,
-    password: formData.get("password") as string
-  };
+    password: formData.get("password") as string,
+    options: {
+      emailRedirectTo: "http://localhost:3000/dashboard"
+    }
+  });
 
-  const { error } = await supabase.auth.signUp(data);
-
+  if (error) {
+    console.error("Login failed 2:", error);
+  } else {
+    console.log("Logged in user 2:", user);
+  }
   if (error) {
     redirect("/error");
   }
 
   revalidatePath("/", "layout");
-  redirect("/dashboard");
 }
 
 // export async function signinwithgoogle() {

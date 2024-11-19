@@ -13,7 +13,6 @@ import {
 } from "@/components/ui/card";
 import { useState } from "react";
 import { login, signup } from "@/app/login/actions";
-import { redirect } from "next/navigation";
 
 export default function AuthForm() {
   const [email, setEmail] = useState("");
@@ -62,25 +61,24 @@ export default function AuthForm() {
   };
 
   // Google Sign-In Function
-  const signInWithGoogle = async () => {
-    setLoading(true);
-    setError("");
-    console.log("im here");
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: `${window.location.origin}/dashboard`,
-        },
-      });
-      alert("Logged in successfully!");
-      if (error) throw error;
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const signInWithGoogle = async () => {
+  //   setLoading(true);
+  //   setError("");
+  //   console.log("im here");
+  //   try {
+  //     const { error } = await supabase.auth.signInWithOAuth({
+  //       provider: "google",
+  //       options: {
+  //         redirectTo: `${window.location.origin}/dashboard`,
+  //       },
+  //     });
+  //     if (error) throw error;
+  //   } catch (err: any) {
+  //     setError(err.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   // Switch between SignUp and SignIn view
   const toggleAuthMode = () => {
@@ -141,7 +139,7 @@ export default function AuthForm() {
               className="w-full mt-4">
               {isSignUp ? "Sign Up" : "Login"}
             </Button>
-            <Button
+            {/* <Button
               variant="outline"
               className="w-full mt-2"
               onClick={(e) => {
@@ -150,7 +148,7 @@ export default function AuthForm() {
               }}
               disabled={loading}>
               Login with Google
-            </Button>
+            </Button> */}
           </div>
         </form>
         <div className="mt-4 text-center text-sm">
